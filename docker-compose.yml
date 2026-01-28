@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  cv:
+    build: ./cv
+    container_name: cv
+    ports:
+      - "8001:8000"
+
+  llm:
+    build: ./llm
+    container_name: llm
+    ports:
+      - "8002:8000"
+
+  governor:
+    build: ./governor
+    container_name: governor
+    ports:
+      - "8003:8000"
