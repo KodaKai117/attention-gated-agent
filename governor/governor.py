@@ -2,9 +2,10 @@ from fastapi import FastAPI
 import requests
 import threading
 import time
+from datetime import datetime
 
 app = FastAPI()
-
+Start_Time = datetime.utcnow()
 CV_URL = "http://cv:8000/state"
 LLM_URL = "http://llm:8000/analyze"
 
@@ -40,3 +41,13 @@ def start_loop():
 @app.get("/state")
 def get_state():
     return STATE
+
+@app.get("/health")
+def get_health():
+    uptime = (datetime.utcnow() - Start_Time).total_seconds()
+    return {
+        "status": "ok",
+        "service": "governor",
+        "uptime_s": int(uptime),
+        "timestamp": datetime.utcnow().isoformat()
+    }
