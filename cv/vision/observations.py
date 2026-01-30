@@ -7,4 +7,6 @@ class VisualObservation:
     timestamp: float
     labels: List[str]
     confidence: Dict[str, float]
-    location: Dict[float, float]
+    location: Dict[str, float] # normalized x,y
+    distancefromcursor: float
+    iscursor: bool
