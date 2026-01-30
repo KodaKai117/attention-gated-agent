@@ -1,8 +1,18 @@
 from fastapi import FastAPI
 from datetime import datetime
+from contextlib import asynccontextmanager
+import threading
+from worker import run
 
 Start_Time = datetime.utcnow()
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app:FastAPI):
+    thread = threading.Thread(target=run, daemon=True)
+    thread.start()
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/state")
 def get_state():
@@ -21,3 +31,5 @@ def get_health():
         "uptime_s": int(uptime),
         "timestamp": datetime.utcnow().isoformat()
     }
+
+
